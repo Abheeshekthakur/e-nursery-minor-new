@@ -32,14 +32,24 @@
             <!-- <a href="#product">product</a> -->
             <a href="/contact">Contact</a>
         </nav>
-
+        
         <div class="icons">
-            <a href="/admin"><i class="fa-solid fa-user"></i></a>
+            <!-- <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i></a> -->
             <a href="/cart" class="fas fa-shopping-cart"></a>
             <!-- <a href="#" class="fas fa-heart"></a> -->
             <!-- <a href="#" class="fas fa-user-circle"></a> -->
-            <div class="size"><%= cart.length %> </div>
-            <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+            <div style="position: absolute;
+                        top: -10%;
+                        right: 70%;
+                        font-size: 1rem;
+                        background-color: #27ae60;
+                        color: #fff;
+                        border-radius: 50%;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        display: grid;
+                        place-items: center;"><%= cart.length %> </div>
+            <a href="/admin"><i class="fa-solid fa-user"></i></a>
         </div>
         <!-- <div class="icons">
             

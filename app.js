@@ -267,6 +267,11 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+app.post("/order-placed", (req, res) => {
+  // console.log("welcone");
+  res.render("order-placed");
+});
+
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;

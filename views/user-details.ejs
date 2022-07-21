@@ -23,6 +23,7 @@
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css\style.css" />
   </head>
+
   <body>
     <!-- header section starts  -->
 
@@ -47,8 +48,12 @@
     <!-- header section ends  -->
 
     <!-- form section starts -->
-    <section>
-      <!-- <form action="/add-plant" method="post"> -->
+    <!-- <section> -->
+    <!-- <form action="/add-plant" method="post"> -->
+
+    <!-- </form> -->
+    <!-- </section> -->
+    <form action="/order-placed" method="post">
       <div class="form-group">
         <label for="exampleFormControlInput1"><h3>Name:</h3></label>
         <input
@@ -94,10 +99,11 @@
         />
       </div>
       <div style="text-align: center">
-        <a href="/order-placed" class="btn">confirm</a>
+        <button class="btn btn-primary" type="submit" name="button">
+          Publish
+        </button>
       </div>
-      <!-- </form> -->
-    </section>
+    </form>
 
     <!-- form section ends -->
   </body>
