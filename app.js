@@ -2,9 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-// var nodemailer = require("nodemailer");
-var sessions = require("express-session");
-const session = require("express-session");
+
 require("dotenv").config();
 function handleError(err) {
   console.log(err);
@@ -39,14 +37,6 @@ var adminSchema = new mongoose.Schema({
 
 var Admins = conn.model("Admins", adminSchema);
 
-var userSchema = new mongoose.Schema({
-  id: String,
-  email: String,
-  status: Boolean,
-});
-
-var User = conn.model("User", userSchema);
-
 let arr = [];
 Plants.find({}).exec((err, data) => {
   if (err) throw err;
@@ -71,7 +61,6 @@ let total = 0;
 const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(sessions({ secret: "hhhh", saveUninitialized: true, resave: true }));
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
@@ -196,79 +185,14 @@ app.post("/remove-plant", function (req, res) {
   });
 });
 
-function mailsent(email, otp) {
-  var transporter = nodemailer.createTransport({
-    service: "gmail",
-    port: 587,
-    auth: {
-      user: process.env.users,
-      pass: process.env.pass,
-    },
-  });
-  var mailOptions = {
-    from: "nursery.minor.project@gmail.com",
-    to: email,
-    subject: "Sending Email using Node.js",
-    html: `<h1>Welcome</h1><h2>OTP ${otp}</h2><h3>Thanks & Regards ,<br> E Nursery</h3>`,
-  };
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
-}
-
-app.get("/otplogin", (req, res) => {
-  res.render("otplogin");
-});
-app.post("/enterotp", (req, res) => {
-  var session = req.session;
-  session.otp = Math.floor(100000 + Math.random() * 900000);
-  mailsent(req.body.email, session.otp);
-  session.email = req.body.email;
-  session.loginStatus = false;
-  User.create({ email: req.body.email, status: session.loginStatus }, (err) => {
-    if (err) return handleError(err);
-  });
-
-  res.render("enterotp", { message: false });
-});
-app.post("/verifyotp", (req, res) => {
-  var session = req.session;
-  console.log(session, req.body);
-  if (session.otp.toString() === req.body.otp) {
-    session.loginStatus = true;
-    var update = { $push: { status: true } };
-    User.findOneAndUpdate({ email: session.email }, update, (err) => {
-      if (err) return handleError(err);
-    });
-    session.otp = "";
-    res.redirect("/");
-  } else {
-    session = req.session;
-    session.otp = Math.floor(100000 + Math.random() * 900000);
-    mailsent(session.email, session.otp);
-    session.loginStatus = false;
-    res.render("enterotp", {
-      message: "this otp is wrong, new otp is sent to your mail",
-    });
-  }
-});
-app.get("/logout", (req, res) => {
-  var session = req.session;
-  var update = { $push: { status: false } };
-  User.findOneAndUpdate({ email: session.email }, update, (err) => {
-    if (err) return handleError(err);
-  });
-  session.loginStatus = false;
-  session.email = "";
-  res.redirect("/");
-});
-
 app.post("/order-placed", (req, res) => {
   // console.log("welcone");
+  cart = [];
+  for (let i = 0; i < arr.length; i++) {
+    arr[i].inCart = false;
+    arr[i].orderedQuantity = 0;
+  }
+
   res.render("order-placed");
 });
 
